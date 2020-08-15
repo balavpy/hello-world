@@ -8,9 +8,9 @@ pipeline {
 		}
 		stage('lint'){
 			steps {
-				sh 'docker build -t webapp .'
+				sh 'sudo docker build -t webapp .'
 			}
-		}
+		 }
 		stage('docker_image'){
 			steps {
 				echo "test"
