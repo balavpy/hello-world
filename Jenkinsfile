@@ -3,7 +3,7 @@ pipeline {
 	stages{
 		stage('build_war'){
 			steps {
-				sh  'mvn test install build'
+				sh  '/opt/maven/bin/mvn test install build'
 			}
 		}
 		stage('lint'){
