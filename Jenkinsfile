@@ -3,7 +3,6 @@ pipeline {
 	stages{
 		stage('build_war'){
 			steps {
-				#sh 'mvn test install build'
 				sh  'ls -lrt'
 			}
 		}
