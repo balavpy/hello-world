@@ -8,7 +8,7 @@ pipeline {
 		}
 		stage('lint'){
 			steps {
-				sh  'ls -lrt'
+				sh  'sudo docker build -t test .'
 			}
 		 }
 		stage('docker_image'){
