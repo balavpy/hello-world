@@ -3,7 +3,7 @@ pipeline {
 	stages{
 		stage('build_war'){
 			steps {
-				sh  '/opt/maven/bin/mvn clean install package'
+				sh  'mvn clean install package'
 			}
 		}
 		stage('lint'){
