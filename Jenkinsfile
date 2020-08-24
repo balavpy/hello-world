@@ -26,7 +26,7 @@ pipeline {
        		 }
 		stage('scan_image'){
 			steps {
-				aquaMicroscanner imageName: 'alpine:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+				aquaMicroscanner imageName: 'balavpy20/webapp:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
 			}
 		}
 	}
