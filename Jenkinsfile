@@ -23,9 +23,7 @@ pipeline {
 		}
 		stage('docker_push'){
 		    steps {
-			withCredentials([usernameColonPassword(credentialsId: 'docker_hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-			  sh 'ls -lrt'
-			 }
+			sh 'ls -lrt'
 		    }
        		 }
 	}
