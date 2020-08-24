@@ -22,13 +22,16 @@ pipeline {
 			}
 		}
 		stage('docker_push'){
-		    withCredentials([usernameColonPassword(credentialsId: 'docker_hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                sh '''
-                  docker login -u $USERNAME -p $PASSWORD
-                  docker push balavpy20/webapp:latest
-                '''
-             }
-		}
-
+            steps {
+                withCredentials([usernameColonPassword(credentialsId: 'docker_hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh '''
+                      docker login -u $USERNAME -p $PASSWORD
+                      docker push balavpy20/webapp:latest
+                    '''
+                 }
+            }
+        }
 	}
 }
+
+
