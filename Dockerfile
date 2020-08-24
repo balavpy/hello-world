@@ -1,3 +1,3 @@
 # hadolint ignore=DL3013
-FROM tomcat:latest
+FROM tomcat
 COPY webapp/target/webapp.war /tmp/
