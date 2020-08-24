@@ -18,7 +18,7 @@ pipeline {
 		}
 		stage('scan_image'){
 			steps {
-				aquaMicroscanner imageName: 'webapp:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+				aquaMicroscanner imageName: 'alpine:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
 			}
 		}
 		stage('docker_push'){
