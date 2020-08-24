@@ -6,15 +6,29 @@ pipeline {
 				sh  'mvn clean install package'
 			}
 		}
-		stage('lint'){
+		stage('lint_checks'){
 			steps {
-				sh  'sudo docker build -t test .'
+				sh  'hadolint Dockerfile'
 			}
 		 }
-		stage('docker_image'){
+		stage('docker_build'){
 			steps {
-				echo "test"
+				sh 'docker build -t balavpy20/webapp:latest .'
 			}
 		}
+		stage('scan_image'){
+			steps {
+				aquaMicroscanner imageName: 'webapp:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+			}
+		}
+		stage('docker_push'){
+		    withCredentials([usernameColonPassword(credentialsId: 'docker_hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                sh '''
+                  docker login -u $USERNAME -p $PASSWORD
+                  docker push balavpy20/webapp:latest
+                '''
+             }
+		}
+
 	}
 }
