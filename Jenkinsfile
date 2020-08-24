@@ -13,7 +13,7 @@ pipeline {
 		 }
 		stage('docker_build'){
 			steps {
-				sh 'docker build -t balavpy20/webapp:latest .'
+				sh 'docker build -t balavpy20/webapp:${env.BUILD_NUMBER} .'
 			}
 		}
 		stage('scan_image'){
@@ -24,7 +24,8 @@ pipeline {
 		stage('docker_push'){
 		    steps {
 			withCredentials([usernameColonPassword(credentialsId:'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-			    sh 'docker login -u $USERNAME -p $PASSWORD'
+				sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
+				sh 'docker push balavpy20/webapp:${env.BUILD_NUMBER}'
 			 }
 		    }
        		 }
