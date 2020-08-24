@@ -24,10 +24,7 @@ pipeline {
 		stage('docker_push'){
 		    steps {
 			withCredentials([usernameColonPassword(credentialsId: 'docker_hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-			    sh '''
-			      docker login -u $USERNAME -p $PASSWORD
-			      docker push balavpy20/webapp:latest
-			    '''
+			  sh 'ls -lrt'
 			 }
 		    }
        		 }
