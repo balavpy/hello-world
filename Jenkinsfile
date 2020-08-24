@@ -16,11 +16,6 @@ pipeline {
 				sh 'docker build -t balavpy20/webapp:latest .'
 			}
 		}
-		stage('scan_image'){
-			steps {
-				aquaMicroscanner imageName: 'alpine:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
-			}
-		}
 		stage('docker_push'){
 		    steps {
 			withCredentials([usernamePassword(credentialsId:'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
@@ -29,6 +24,11 @@ pipeline {
 			 }
 		    }
        		 }
+		stage('scan_image'){
+			steps {
+				aquaMicroscanner imageName: 'alpine:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+			}
+		}
 	}
 }
 
