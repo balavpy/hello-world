@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  namespace: default
+spec :
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+       maxSurge: 1
+       maxUnavailable: 25%
+  selector:
+    matchLables:
+      app: webapp
+  template:
+    metadata:
+      lables:
+        app: webapp
+    spec:
+      containers:
+        - image: balavpy20/webapp:latest
+          imagePullPolicy: Always
+          name: webapp
+          ports:
+          - Containerport: 80
+          redinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            successThreshold: 2
