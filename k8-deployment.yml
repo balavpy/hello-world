@@ -11,11 +11,11 @@ spec :
        maxSurge: 1
        maxUnavailable: 25%
   selector:
-    matchLables:
+    matchLabels:
       app: webapp
   template:
     metadata:
-      lables:
+      labels:
         app: webapp
     spec:
       containers:
@@ -23,11 +23,29 @@ spec :
           imagePullPolicy: Always
           name: webapp
           ports:
-          - Containerport: 80
-          redinessProbe:
+          - containerPort: 8080
+          readinessProbe:
             httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 15
-            successThreshold: 2
+              path: /webapp
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 5
+            timeoutSeconds: 15
+            failureThreshold: 6
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp
+  namespace: default
+  labels:
+   app: webapp
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 31200
+  selector:
+    app: webapp
