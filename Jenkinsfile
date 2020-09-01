@@ -31,9 +31,9 @@ pipeline {
 		}
 		stage('Deployment'){
 			steps {
-				withAWS(credentials: 'static-id', region: 'ap-east-1') {
-                      			sh "aws eks --region ap-south-1 update-kubeconfig --name eks-cluster"
-				}
+			 withAWS(credentials: 'static-id', region: 'ap-east-1') {
+                      		sh 'ls -lrt'
+			 }
 			}
 		}
 	}
