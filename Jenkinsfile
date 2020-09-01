@@ -29,7 +29,13 @@ pipeline {
 				aquaMicroscanner imageName: 'balavpy20/webapp:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
 			}
 		}
+		stage('Deployment'){
+			steps {
+				withAWS(credentials: 'static-id', region: 'ap-east-1') {
+                      			sh "aws eks --region ap-south-1 update-kubeconfig --name eks-cluster"
+				}
+			}
+		}
 	}
 }
-
 
