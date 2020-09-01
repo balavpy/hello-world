@@ -31,7 +31,7 @@ pipeline {
 		}
 		stage('Deployment'){
 			steps {
-			 withAWS(credentials: 'static-id', region: 'ap-east-1') {
+			 withAWS(credentials: 'static-id', region: 'us-east-1') {
                       		sh 'ls -lrt'
 			 }
 			}
