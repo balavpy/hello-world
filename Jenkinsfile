@@ -2,7 +2,7 @@ pipeline {
 	agent any
 	environment {
 		DOCKER_TAG = getDockerTag()
-		IMAGE = 'balavpy20/webapp:${DOCKER_TAG}'
+		IMAGE = "balavpy20/webapp:'${DOCKER_TAG}'"
 	}
 	stages{
 		stage('build_war'){
