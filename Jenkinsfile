@@ -23,7 +23,7 @@ pipeline {
 		    steps {
 			withCredentials([usernamePassword(credentialsId:'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 				sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-				sh 'docker push balavpy20/webapp:latest'
+				sh 'docker push balavpy20/webapp:${DOCKER_TAG}'
 			 }
 		    }
        		 }
@@ -34,6 +34,7 @@ pipeline {
 		}
 		stage('Deployment'){
 			steps {
+				sh 'ls -lrt'
 				sh "aws eks --region us-east-1 update-kubeconfig --name eks-cluster"
 				sh "chmod +x tagscript.sh"
 				sh "./tagscript.sh ${DOCKER_TAG}"  
