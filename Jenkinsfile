@@ -17,14 +17,14 @@ pipeline {
 		 }
 		stage('docker_build'){
 			steps {
-				sh 'docker build . -t ${IMAGE}'
+				sh 'docker build . -t balavpy20/webapp:${DOCKER_TAG}'
 			}
 		}
 		stage('docker_push'){
 		    steps {
 			withCredentials([usernamePassword(credentialsId:'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 				sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-				sh 'docker push ${IMAGE}'
+				sh 'docker push balavpy20/webapp:${DOCKER_TAG}'
 			 }
 		    }
        		 }
