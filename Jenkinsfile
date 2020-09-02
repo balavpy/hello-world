@@ -2,6 +2,7 @@ pipeline {
 	agent any
 	environment {
 		DOCKER_TAG = getDockerTag()
+		IMAGE = 'balavpy20/webapp:${DOCKER_TAG}'
 	}
 	stages{
 		stage('build_war'){
@@ -16,20 +17,20 @@ pipeline {
 		 }
 		stage('docker_build'){
 			steps {
-				sh 'docker build . -t balavpy20/webapp:${DOCKER_TAG}'
+				sh 'docker build . -t $IMAGE'
 			}
 		}
 		stage('docker_push'){
 		    steps {
 			withCredentials([usernamePassword(credentialsId:'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 				sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-				sh 'docker push balavpy20/webapp:${DOCKER_TAG}'
+				sh 'docker push $IMAGE'
 			 }
 		    }
        		 }
 		stage('scan_image'){
 			steps {
-				aquaMicroscanner imageName: 'balavpy20/webapp:$DOCKER_TAG', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+				aquaMicroscanner imageName: $IMAGE , notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
 			}
 		}
 		stage('Deployment'){
