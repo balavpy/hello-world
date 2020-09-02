@@ -17,20 +17,20 @@ pipeline {
 		 }
 		stage('docker_build'){
 			steps {
-				sh 'docker build . -t $IMAGE'
+				sh 'docker build . -t ${IMAGE}'
 			}
 		}
 		stage('docker_push'){
 		    steps {
 			withCredentials([usernamePassword(credentialsId:'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 				sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-				sh 'docker push $IMAGE'
+				sh 'docker push ${IMAGE}'
 			 }
 		    }
        		 }
 		stage('scan_image'){
 			steps {
-				aquaMicroscanner imageName: $IMAGE , notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+				aquaMicroscanner imageName: ${IMAGE} , notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
 			}
 		}
 		stage('Deployment'){
