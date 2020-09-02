@@ -2,7 +2,7 @@ pipeline {
 	agent any
 	environment {
 		DOCKER_TAG = getDockerTag()
-		IMAGE = "balavpy20/webapp:'${DOCKER_TAG}'"
+		IMAGE = 'balavpy20/webapp:\"$DOCKER_TAG\"'
 	}
 	stages{
 		stage('build_war'){
@@ -30,7 +30,8 @@ pipeline {
        		 }
 		stage('scan_image'){
 			steps {
-				aquaMicroscanner imageName: "${IMAGE}" , notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+				echo '${IMAGE}'
+				aquaMicroscanner imageName: '${IMAGE}', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
 			}
 		}
 		stage('Deployment'){
