@@ -30,8 +30,8 @@ pipeline {
        		 }
 		stage('scan_image'){
 			steps {
-				echo 'balavpy20/webapp:\"$DOCKER_TAG\"'
-				aquaMicroscanner imageName: 'balavpy20/webapp:\"$DOCKER_TAG\"', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+				echo 'balavpy20/webapp:\"${DOCKER_TAG}\"'
+				aquaMicroscanner imageName: 'balavpy20/webapp:\"${DOCKER_TAG}\"', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
 			}
 		}
 		stage('Deployment'){
