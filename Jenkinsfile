@@ -46,7 +46,8 @@ pipeline {
 		}
 		stage('application_status'){
 			steps {
-				sh  'app_status.sh'
+				sh 'http_url=`kubectl get svc  webapp  | cut -d' ' -f10 | tail -1`'
+				sh 'httpstatus=`curl -s -o /dev/null -w \"%{http_code}\" \"${http_url}\":8080/webapp/`'
 			}
 		}
 	}
