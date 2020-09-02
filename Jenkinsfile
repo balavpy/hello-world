@@ -30,7 +30,7 @@ pipeline {
        		 }
 		stage('scan_image'){
 			steps {
-				aquaMicroscanner imageName: ${IMAGE} , notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+				aquaMicroscanner imageName: "${IMAGE}" , notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
 			}
 		}
 		stage('Deployment'){
