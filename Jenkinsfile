@@ -32,12 +32,11 @@ pipeline {
 		stage('Deployment'){
 			steps {
 				  sh "aws eks --region us-east-1 update-kubeconfig --name eks-cluster"
-				  sh "kubectl config use-context arn:aws:eks:ap-south-1:960920920983:cluster/capstoneclustersagarnil"
 				  sh "kubectl apply -f k8-deployment.yml"
 				  sh "kubectl get nodes"
 				  sh "kubectl get deployments"
 				  sh "kubectl get pod -o wide"
-				  sh "kubectl get service/capstone-app-sagarnil"
+				  sh "kubectl get services"
 			}
 		}
 		stage('Deployment_Status'){
