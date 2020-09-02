@@ -29,7 +29,7 @@ pipeline {
        		 }
 		stage('scan_image'){
 			steps {
-				aquaMicroscanner imageName: 'balavpy20/webapp:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+				aquaMicroscanner imageName: 'balavpy20/webapp:${DOCKER_TAG}', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
 			}
 		}
 		stage('Deployment'){
@@ -37,7 +37,8 @@ pipeline {
 				sh 'ls -lrt'
 				sh "aws eks --region us-east-1 update-kubeconfig --name eks-cluster"
 				sh "chmod +x tagscript.sh"
-				sh "./tagscript.sh ${DOCKER_TAG}"  
+				sh "ls -lrt; pwd"
+				sh "./tagscript.sh ${DOCKER_TAG}"
 				sh "kubectl apply -f k8-deployment.yml"
 				sh "kubectl get nodes"
 				sh "kubectl get deployments"
