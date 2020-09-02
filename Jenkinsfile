@@ -1,5 +1,8 @@
 pipeline {
 	agent any
+	environment {
+		DOCKER_TAG = getDockerTag()
+	}
 	stages{
 		stage('build_war'){
 			steps {
@@ -13,7 +16,7 @@ pipeline {
 		 }
 		stage('docker_build'){
 			steps {
-				sh 'docker build -t balavpy20/webapp:latest .'
+				sh 'docker build . -t balavpy20/webapp:${DOCKER_TAG}'
 			}
 		}
 		stage('docker_push'){
@@ -31,12 +34,14 @@ pipeline {
 		}
 		stage('Deployment'){
 			steps {
-				  sh "aws eks --region us-east-1 update-kubeconfig --name eks-cluster"
-				  sh "kubectl apply -f k8-deployment.yml"
-				  sh "kubectl get nodes"
-				  sh "kubectl get deployments"
-				  sh "kubectl get pod -o wide"
-				  sh "kubectl get services"
+				sh "aws eks --region us-east-1 update-kubeconfig --name eks-cluster"
+				sh "chmod +x tagscript.sh"
+				sh "./tagscript.sh ${DOCKER_TAG}"  
+				sh "kubectl apply -f k8-deployment.yml"
+				sh "kubectl get nodes"
+				sh "kubectl get deployments"
+				sh "kubectl get pod -o wide"
+				sh "kubectl get services"
 			}
 		}
 		stage('Status'){
@@ -58,4 +63,9 @@ pipeline {
 			}
 		}
 	}
+}
+
+def getDockerTag () {
+	def tag = sh script: 'git rev-parse HEAD', returnStdout:true
+	return tag
 }
