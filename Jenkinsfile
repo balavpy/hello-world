@@ -39,9 +39,16 @@ pipeline {
 				  sh "kubectl get services"
 			}
 		}
-		stage('Deployment_Status'){
+		stage('Status'){
 			steps {
 				  sh "kubectl rollout status deployments/webapp"
+			}
+		}
+		stage('application_status'){
+			steps {
+				sh  'http_url=`kubectl get svc  webapp  | cut -d' ' -f10 | tail -1`'
+				sh  'httpstatus=`curl -s -o /dev/null -w "%{http_code}" ${http_url}:8080/webapp/`'
+				sh  'echo $httpstatus'
 			}
 		}
 	}
