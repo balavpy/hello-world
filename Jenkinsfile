@@ -29,7 +29,7 @@ pipeline {
        		 }
 		stage('scan_image'){
 			steps {
-				aquaMicroscanner imageName: 'balavpy20/webapp', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+				aquaMicroscanner imageName: 'tomcat:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
 			}
 		}
 		stage('Deployment'){
