@@ -42,7 +42,7 @@ pipeline {
 				sh "kubectl get deployments"
 				sh "kubectl get pod -o wide"
 				sh "kubectl get services"
-				sh "docker image prune --all"
+				sh "docker image prune -a -f "
 			}
 		}
 		stage('Status'){
