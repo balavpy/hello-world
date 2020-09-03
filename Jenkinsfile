@@ -38,7 +38,7 @@ pipeline {
 				sh "aws eks --region us-east-1 update-kubeconfig --name eks-cluster"
 				sh "chmod +x tagscript.sh"
 				sh "ls -lrt; pwd"
-				sh "./tagscript.sh ${DOCKER_TAG}"
+				sh "bash tagscript.sh ${DOCKER_TAG}"
 				sh "kubectl apply -f k8-deployment.yml"
 				sh "kubectl get nodes"
 				sh "kubectl get deployments"
