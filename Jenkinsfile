@@ -14,6 +14,11 @@ pipeline {
 				sh  'hadolint Dockerfile'
 			}
 		 }
+		stage('scan_image'){
+			steps {
+				aquaMicroscanner imageName: 'tomcat:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
+			}
+		}
 		stage('docker_build'){
 			steps {
 				sh 'docker build . -t balavpy20/webapp:${DOCKER_TAG}'
@@ -27,15 +32,10 @@ pipeline {
 			 }
 		    }
        		 }
-		stage('scan_image'){
-			steps {
-				aquaMicroscanner imageName: 'tomcat:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'html'
-			}
-		}
+		
 		stage('Deployment'){
 			steps {
 				sh "aws eks --region us-east-1 update-kubeconfig --name eks-cluster"
-				sh "chmod +x tagscript.sh"
 				sh "bash tagscript.sh ${DOCKER_TAG}"
 				sh "kubectl apply -f k8-deployment.yml"
 				sh "kubectl get nodes"
@@ -45,12 +45,12 @@ pipeline {
 				sh "docker image prune -a -f "
 			}
 		}
-		stage('Status'){
+		stage('Deployment Status'){
 			steps {
 				  sh "kubectl rollout status deployments/webapp"
 			}
 		}
-		stage('application_status'){
+		stage('Application Status'){
 			steps {
 				sh "chmod +x app_status.sh"
 				sh "bash app_status.sh"
