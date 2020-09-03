@@ -36,6 +36,7 @@ pipeline {
 		stage('Deployment'){
 			steps {
 				sh "aws eks --region us-east-1 update-kubeconfig --name eks-cluster"
+				sh "kubectl config set-context --current --namespace=kube-system"
 				sh "bash tagscript.sh ${DOCKER_TAG}"
 				sh "kubectl apply -f k8-deployment.yml"
 				sh "kubectl get nodes"
