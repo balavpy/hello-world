@@ -34,10 +34,8 @@ pipeline {
 		}
 		stage('Deployment'){
 			steps {
-				sh 'ls -lrt'
 				sh "aws eks --region us-east-1 update-kubeconfig --name eks-cluster"
 				sh "chmod +x tagscript.sh"
-				sh "ls -lrt; pwd"
 				sh "bash tagscript.sh ${DOCKER_TAG}"
 				sh "kubectl apply -f k8-deployment.yml"
 				sh "kubectl get nodes"
@@ -53,15 +51,8 @@ pipeline {
 		}
 		stage('application_status'){
 			steps {
-				sh """
-					http_url=`kubectl get svc  webapp  | cut -d' ' -f10 | tail -1`
-					httpstatus=`curl -s -o /dev/null -w "%{http_code}" ${http_url}:8080/webapp/`
-					if [ $httpstatus == '200' ]; then;
-					  echo "http status is  '${httpstatus}'- Application is Up & Running"
-					else
-					  echo "http status is  '${httpstatus}' "
-					fi;
-				"""
+				sh "chmod +x app_status.sh"
+				sh "bash app_status.sh"
 			}
 		}
 	}
